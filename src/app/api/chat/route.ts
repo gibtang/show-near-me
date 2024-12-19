@@ -60,8 +60,11 @@ export async function POST(req: Request) {
         console.log('geo', geo);
         let country = req.headers.get('x-vercel-ip-country') || 'SG';
         console.log('country', country);
-        coordinates.lat = geo.latitude ?? "0.0";
-        coordinates.lat = geo.longitude ?? "0.0";
+        if (process.env.DEBUG){
+            console.log('debug coordinates');
+            coordinates.lat = geo.latitude ?? "0.0";
+            coordinates.lat = geo.longitude ?? "0.0";
+        }
 
         //debug
         // coordinates.lat = "103.8859";
