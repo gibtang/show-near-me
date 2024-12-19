@@ -1,12 +1,10 @@
 import { StreamingTextResponse, LangChainStream } from 'ai';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
-
 import { ConversationalRetrievalQAChain } from 'langchain/chains';
 import { vectorStore } from 'utils/openai'; // Corrected import statement
 import { NextResponse } from 'next/server';
-// import { BaseMemory } from "langchain/memory";
 import { MongoClient } from "mongodb";
-import { geolocation } from '@vercel/functions'
+import { geolocation } from '@vercel/functions';
 import { BufferMemory } from "langchain/memory";
 import Anthropic from '@anthropic-ai/sdk';
 
@@ -32,7 +30,7 @@ async function logMessages(messages: Message[], debug: string | undefined) {
 }
 
 interface Message {
-  role: string;
+  role: 'user' | 'assistant'; // Updated to restrict role to specific string literals
   content: string;
 }
 
@@ -52,83 +50,47 @@ export async function POST(req: Request) {
             long: "0.0"  // Replace with actual longitude
         };
 
-        console.log('debug cookie:', debug);
-        await logMessages(messages, debug); // Logging messages with debug
-        console.log('body', body);
-
         const geo = geolocation(req);
-        console.log('geo', geo);
         let country = req.headers.get('x-vercel-ip-country') || 'SG';
-        console.log('country', country);
-        if (process.env.DEBUG){
-            console.log('debug coordinates');
-            coordinates.lat = "0.0";
-            coordinates.lat = "0.0";
-            
+
+        if (process.env.DEBUG) {
+            coordinates.lat = "1.346300";
+            coordinates.long = "103.899612"; // Fixed the longitude assignment
         } else {
             coordinates.lat = geo.latitude ?? "0.0";
-            coordinates.long = geo.longitude ?? "0.0"
+            coordinates.long = geo.longitude ?? "0.0";
         }
 
-        let prompt = `You are a travel guide who knows places near to the latitude ${coordinates.lat} and longitude ${coordinates.long} in country ${country}. If there are questions where there is no mention of distance or travel time. Then use a default of 2 kilometers. If there are places, then also return a blue underlined google.com result link of the places which should be in a href link to open the link in a new tab` + "{{QUERY}}";
-        // country = 'US'; // For testing purposes
-        // if (country === 'SG') {
-        //     prompt = ``;
-        // } else {
-        //   prompt = ``;
-        // };
+        let prompt = `You are a travel guide who knows places near to the latitude ${coordinates.lat} and longitude ${coordinates.long} in country ${country}. If there are questions where there is no mention of distance or travel time, then use a default of 2 kilometers. If there are places, then always return a CSS blue underlined google.com result hyperlink of the places which open the link in a new tab. The text of the places hyperlink should always be "Open in Google". Each location should have a suitable emoji if possible. Also return an estimated distance in km for each place from my current location which is in latitude and longitude. Arrange the results from nearest to the furthest.`;
 
-        const question = prompt.replace("{{QUERY}}", messages[messages.length - 1].content);
-
-        console.log(`Received prompt: ${question}`);
-
-        // const model = new ChatOpenAI({
-        //     modelName: "gpt-3.5-turbo-1106",
-        //     temperature: 0.8,
-        //     streaming: true,
-        //     callbacks: [handlers],
-        //     presencePenalty: 0.5,
-        // });
+        const question = messages[messages.length - 1].content;
 
         const retriever = vectorStore().asRetriever({ 
             "searchType": "mmr", 
             "searchKwargs": { "fetchK": 10, "lambda": 0.5 } 
-        })
+        });
 
-        // First get the relevant documents from the retriever
-        const relevantDocs = await retriever.getRelevantDocuments(question);
-        
-        // Format the retrieved documents as context
-        let context = relevantDocs.map(doc => doc.pageContent).join('\n\n');
-
-        // //const memory = new LimitedBufferMemory("chat_history", 10);
-        // const conversationChain = ConversationalRetrievalQAChain.fromLLM(model, retriever, {
-        //   memory: new BufferMemory({
-        //     memoryKey: "chat_history",
-        //   }),
-        // })
-        // conversationChain.invoke({
-        //     "question": question
-        // })
-
-        // Create the stream with Anthropic
         const anthropic = new Anthropic({
             apiKey: process.env.ANTHROPIC_API_KEY
-          });
-          
-        context = '';
+        });
+
+        let ai_messages: Message[] = [
+          {
+              role: "user",
+              content: question
+          },
+          ...messages as Message[] // Ensure messages are treated as Message[]
+        ];
+        console.log('prompt:', prompt);
+        console.log('messages', ai_messages);
         const anthropic_stream = await anthropic.messages.stream({
             model: "claude-3-5-sonnet-20241022",
             max_tokens: 4096,
             temperature: 0.8,
-            system: prompt + ". Use the following context to answer questions accurately:" + context,//"You are an AI assistant specializing in credit cards and MCCs.",
-            messages: [
-{
-                    role: "user",
-                    content: question
-                }
-            ]
+            system: prompt,
+            messages: ai_messages
         });
+
         const readableStream = new ReadableStream({
           async start(controller) {
               for await (const part of anthropic_stream) {
@@ -140,12 +102,11 @@ export async function POST(req: Request) {
                   }
               }
           },
-      });
-
+        });
 
         return new StreamingTextResponse(readableStream);
-    }
-    catch (e) {
+    } catch (e) {
+        console.error('Error processing request:', e); // Log the actual error
         return NextResponse.json({ message: 'Error Processing' }, { status: 500 });
     }
 }
