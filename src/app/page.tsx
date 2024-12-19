@@ -53,7 +53,7 @@ const Homepage = () => {
               </div>
               <div className="space-y-4 mb-4">
                 <div className="p-3 bg-blue-50 rounded-lg">
-                  <p className="text-gray-700">🎨 "Where can I find art galleries near me?"</p>
+                  <p className="text-gray-700">🎨 &quot;Where can I find art galleries near me?&quot;</p>
                 </div>
                 <div className="p-3 bg-green-50 rounded-lg">
                   <p className="text-gray-700">🌿 Finding 3 art galleries within 1 mile...</p>
@@ -101,7 +101,7 @@ const Homepage = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-xl shadow-sm">
               <p className="text-gray-600 mb-4">
-                &quot;It&apos;s like having a knowledgeable friend in every city! Found the most amazing local 
+              &quot;It&apos;s like having a knowledgeable friend in every city! Found the most amazing local 
                 coffee shop I would have never discovered otherwise.&quot;
               </p>
               <p className="font-semibold">Sarah M.</p>
@@ -109,7 +109,7 @@ const Homepage = () => {
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm">
               <p className="text-gray-600 mb-4">
-                &quot;Perfect for when you&apos;re in a new neighborhood and want to find those hidden gems 
+              &quot;Perfect for when you&apos;re in a new neighborhood and want to find those hidden gems 
                 that locals love!&quot;
               </p>
               <p className="font-semibold">James L.</p>
@@ -117,7 +117,7 @@ const Homepage = () => {
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm">
               <p className="text-gray-600 mb-4">
-                &quot;The recommendations are spot-on and it feels like chatting with a friend who 
+              &quot;The recommendations are spot-on and it feels like chatting with a friend who 
                 really knows the area.&quot;
               </p>
               <p className="font-semibold">Maya K.</p>
