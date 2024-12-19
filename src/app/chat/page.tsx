@@ -112,18 +112,25 @@ export default function Home() {
                 {m.role !== 'user' && (
                   <Image 
                     src="/miles.png" 
-                    alt="AI Avatar" 
+                    alt="AI Buddy" 
                     width={32} 
                     height={32} 
                     className="mr-3 rounded-full shadow-sm" 
                   />
                 )}
                 <div>
-                  <span className="font-medium">{m.role === 'user' ? 'You' : 'Miles'}:</span>{' '}
+                  <span className="font-medium">{m.role === 'user' ? 'You' : 'AI Buddy'}:</span>{' '}
                   {(() => {
                     try {
                       const parsedContent: MessageResponse = JSON.parse(m.content);
-                      return parsedContent.message;
+                      const message = parsedContent.message;
+
+                      // Check if the message contains HTML tags
+                      // const hasHtmlTags = /<\/?[a-z][\s\S]*>/i.test(message);
+                      // if (hasHtmlTags) {
+                      // return <div dangerouslySetInnerHTML={{ __html: message }} />;
+
+                      return message;
                     } catch (e) {
                       return m.content.split('\n').map((line, i) => (
                         <React.Fragment key={i}>

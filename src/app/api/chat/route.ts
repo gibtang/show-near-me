@@ -70,7 +70,7 @@ export async function POST(req: Request) {
             coordinates.long = geo.longitude ?? "0.0"
         }
 
-        let prompt = `You are a travel guide who knows places near to the latitude ${coordinates.lat} and longitude ${coordinates.long} in country ${country}. If there are questions where there is no mention of distance or travel time. Then use a default of 2 kilometers.` + "{{QUERY}}";
+        let prompt = `You are a travel guide who knows places near to the latitude ${coordinates.lat} and longitude ${coordinates.long} in country ${country}. If there are questions where there is no mention of distance or travel time. Then use a default of 2 kilometers. If there are places, then also return a google.com result link of the places which should be in a href link to open the link in a new tab` + "{{QUERY}}";
         // country = 'US'; // For testing purposes
         // if (country === 'SG') {
         //     prompt = ``;
