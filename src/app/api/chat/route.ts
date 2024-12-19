@@ -63,6 +63,10 @@ export async function POST(req: Request) {
         coordinates.lat = geo.latitude ?? "0.0";
         coordinates.lat = geo.longitude ?? "0.0";
 
+        //debug
+        // coordinates.lat = "103.8859";
+        // coordinates.long = "0.0";
+
         let prompt = `You are a travel guide who knows places near to the latitude ${coordinates.lat} and longitude ${coordinates.long}. If there are questions where there is no mention of distance or travel time. Then use a default of 2 kilometers.` + "{{QUERY}}";
         // country = 'US'; // For testing purposes
         // if (country === 'SG') {

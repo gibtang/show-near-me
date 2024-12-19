@@ -91,7 +91,7 @@ export default function Home() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <NextSeo
         title="Miles and Credit Card Chatbot"
         description="Ask me about your credit card and miles questions"
