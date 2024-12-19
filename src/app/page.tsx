@@ -28,7 +28,7 @@ export default function LandingPage() {
         <div className="relative z-10 mx-auto max-w-4xl animate-fade-in">
           <Image 
             src="/miles.png"
-            alt="Ask Miles Logo"
+            alt=""
             width={64}
             height={64}
             className="mx-auto mb-6 w-16 h-16 rounded-full shadow-lg"
@@ -100,7 +100,7 @@ export default function LandingPage() {
           <Shield className="h-4 w-4" />
           <span>Your data is always secure and private</span>
         </div>
-        <p>&copy; 2024 ask-miles.com. All rights reserved.</p>
+        <p></p>
       </footer>
     </div>
   );

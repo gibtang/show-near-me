@@ -7,8 +7,8 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Ask Miles',
-  description: 'Ask Miles is a chatbot that helps you with your miles and credit card questions.',
+  title: 'Travel Near By',
+  description: 'Wandering what\'s nearby to explore? Ask me',
   icons: {
     icon: [
       { url: '/favicon.ico' },
