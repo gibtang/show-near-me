@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add any custom global styles below this line */
+body {
+  @apply bg-gradient-to-b from-blue-50 to-white min-h-screen;
+}
+
+/* Optional: Add custom styles for links */
+a {
+  @apply transition-colors duration-300;
+}
