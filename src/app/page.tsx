@@ -3,6 +3,7 @@ import React from 'react';
 import { Globe, MapPin, MessageSquare, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation'; // Updated import
 import Navbar from './component/navbar'; // Using a relative path from the src directory
+import Footer from './component/footer';
 
 const Homepage = () => {
   const router = useRouter();
@@ -123,6 +124,7 @@ const Homepage = () => {
               <p className="text-sm text-gray-500">Local Explorer</p>
             </div>
           </div>
+          <Footer /> {/* Adding the Footer component */}
         </div>
       </div>
     </div>

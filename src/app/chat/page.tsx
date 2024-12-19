@@ -18,8 +18,6 @@ export default function Home() {
   const [waitingForAI, setWaitingForAI] = useState<boolean>(false);
   const [debugMode, setDebugMode] = useState<string | undefined>();
   const [geoResponse, setGeoResponse] = useState<string | null>(null);
-  const [latitude, setLatitude] = useState<number | null>(null);
-  // const [longitude, setLongitude] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,29 +28,11 @@ export default function Home() {
   useEffect(() => {
     const fetchGeoData = async () => {
       try {
-        // Get user's current location
-        // if (navigator.geolocation) {
-        //   navigator.geolocation.getCurrentPosition(
-        //     (position) => {
-        //       setLatitude(position.coords.latitude);
-        //       setLongitude(position.coords.longitude);
-        //       // console.log('Latitude:', position.coords.latitude);
-        //       // console.log('Longitude:', position.coords.longitude);
-        //     },
-        //     (error) => {
-        //       console.error('Error getting location:', error);
-        //     }
-        //   );
-        // } else {
-        //   console.error('Geolocation is not supported by this browser.');
-        // }
-
         const response = await fetch('/api/geo', {
-          method: 'GET', // Explicitly using HTTP GET
+          method: 'GET',
         });
         const data = await response.json();
-        console.log('geo data:', data);
-        setGeoResponse(data.location.country); // Assuming the response has a 'message' field
+        setGeoResponse(data.location.country);
       } catch (error) {
         console.error('Error fetching geo data:', error);
       }
@@ -74,7 +54,6 @@ export default function Home() {
     },
     body: {
       debug: debugMode,
-      // coordinates: {lat: latitude, long: longitude}
     }
   });
 
@@ -97,16 +76,15 @@ export default function Home() {
         description="Ask me about your credit card and miles questions"
       />
       <NavBar />
-      <main className="container mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-20">
         <header className="mb-8">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold text-gray-900">
               Find Near Me
-            {' '}
-            {geoResponse && <span>{geoResponse}</span>}
+              {geoResponse && <span>{geoResponse}</span>}
             </h1>
             <div className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Just key in what you want to discover and we will surface places for you within 2 kilometers. You must share your location to get optimal results
+              Just key in what you want to discover and we will surface places for you within 2 kilometers
             </div>
           </div>
         </header>
@@ -120,8 +98,6 @@ export default function Home() {
             )}
             {messages.length === 0 && (
               <div className="flex flex-col items-center justify-center h-full space-y-4 text-gray-500">
-                {/* <Image src="/miles.png" alt="Miles Logo" width={64} height={64} className="rounded-full shadow-lg" />
-                <p className="text-lg">Ask me anything about credit cards and airline miles!</p> */}
               </div>
             )}
             {messages.map((m, index) => (
