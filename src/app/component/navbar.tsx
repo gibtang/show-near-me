@@ -7,7 +7,7 @@ import { Menu, X } from 'lucide-react';
 const navigationLinks = [
   // { href: "/mcc-list", text: "Check MCCs" },
   // { href: "/faq", text: "FAQs" },
-  // { href: "/changelog", text: "Updates" }
+  { href: "/", text: "Home" }
 ];
 
 const NavBar = () => {
