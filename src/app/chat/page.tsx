@@ -17,28 +17,11 @@ interface MessageResponse {
 export default function Home() {
   const [waitingForAI, setWaitingForAI] = useState<boolean>(false);
   const [debugMode, setDebugMode] = useState<string | undefined>();
-  const [geoResponse, setGeoResponse] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const debugCookie = Cookies.get('debug');
     setDebugMode(debugCookie);
-  }, []);
-
-  useEffect(() => {
-    const fetchGeoData = async () => {
-      try {
-        const response = await fetch('/api/geo', {
-          method: 'GET',
-        });
-        const data = await response.json();
-        setGeoResponse(data.location.country);
-      } catch (error) {
-        console.error('Error fetching geo data:', error);
-      }
-    };
-
-    fetchGeoData();
   }, []);
 
   const scrollToBottom = useCallback(() => {
@@ -72,8 +55,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <NextSeo
-        title="Miles and Credit Card Chatbot"
-        description="Ask me about your credit card and miles questions"
+        title="Travel Near By"
+        description="Ask me about local attractions and places"
       />
       <NavBar />
       <main className="max-w-7xl mx-auto px-6 py-20">
@@ -81,10 +64,9 @@ export default function Home() {
           <div className="text-center space-y-4">
             <h1 className="text-4xl font-bold text-gray-900">
               Find Near Me
-              {geoResponse && <span>{geoResponse}</span>}
             </h1>
             <div className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Just key in what you want to discover and we will surface places for you within 2 kilometers
+              Just key in what you want to discover and we will surface places for you within walking distance
             </div>
           </div>
         </header>
@@ -125,12 +107,7 @@ export default function Home() {
                       const parsedContent: MessageResponse = JSON.parse(m.content);
                       const message = parsedContent.message;
 
-                      // Check if the message contains HTML tags
-                      // let hasHtmlTags = /<\/?[a-z][\s\S]*>/i.test(message);
-                      // if (hasHtmlTags) {
                       return <div dangerouslySetInnerHTML={{ __html: message }} />;
-                      // }
-                      // return message;
                     } catch (e) {
                       return m.content.split('\n').map((line, i) => (
                         <React.Fragment key={i}>
