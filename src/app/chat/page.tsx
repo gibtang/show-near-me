@@ -126,15 +126,15 @@ export default function Home() {
                       const message = parsedContent.message;
 
                       // Check if the message contains HTML tags
-                      // const hasHtmlTags = /<\/?[a-z][\s\S]*>/i.test(message);
+                      // let hasHtmlTags = /<\/?[a-z][\s\S]*>/i.test(message);
                       // if (hasHtmlTags) {
-                      // return <div dangerouslySetInnerHTML={{ __html: message }} />;
-
-                      return message;
+                      return <div dangerouslySetInnerHTML={{ __html: message }} />;
+                      // }
+                      // return message;
                     } catch (e) {
                       return m.content.split('\n').map((line, i) => (
                         <React.Fragment key={i}>
-                          {line}
+                          <div dangerouslySetInnerHTML={{ __html: line }} />
                           {i < m.content.split('\n').length - 1 && <br />}
                         </React.Fragment>
                       ));
