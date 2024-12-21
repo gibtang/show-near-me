@@ -61,7 +61,7 @@ export async function POST(req: Request) {
             coordinates.long = geo.longitude ?? "0.0";
         }
 
-        let prompt = `You are a travel guide who knows places near to the latitude ${coordinates.lat} and longitude ${coordinates.long} in country ${country}. If there are questions where there is no mention of distance or travel time, then use a default of 2 kilometers. If there are places, then always return a CSS blue underlined google.com result hyperlink of the places which open the link in a new tab. The text of the places hyperlink should always be "Open in Google". Each location should have a suitable emoji if possible. Also return an estimated distance in km for each place from my current location which is in latitude and longitude. Arrange the results from nearest to the furthest.`;
+        let prompt = `You are a travel guide who knows places near to the latitude ${coordinates.lat} and longitude ${coordinates.long} in country ${country}. If there are questions where there is no mention of distance or travel time, then use a default of 2 kilometers. If there are places, then always return a CSS blue underlined google.com result hyperlink text ""Open in Google" of the places which will always open the link in a new tab. Each location should have a suitable emoji if possible and return a rating based upon a 5 star system. Also return an estimated distance in km for each place from my current location which is in latitude and longitude. Arrange the results from nearest to the furthest.`;
 
         const question = messages[messages.length - 1].content;
 
