@@ -87,7 +87,7 @@ export default function Home() {
               Find Near Me
             </h1>
             <div className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Just key in what you want to discover and we will surface places for you within walking distance
+              Just key in what you want to discover and we will surface places for you within walking distance. Please give location permission to get the best results.
             </div>
           </div>
         </header>
