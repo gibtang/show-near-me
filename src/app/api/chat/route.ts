@@ -57,8 +57,8 @@ export async function POST(req: Request) {
             coordinates.lat = "1.346300";
             coordinates.long = "103.899612"; // Fixed the longitude assignment
         } else {
-            coordinates.lat = body.latitude ?? "0.0";
-            coordinates.long = body.longitude ?? "0.0";
+            coordinates.lat = body.latitude ?? geo.latitude;
+            coordinates.long = body.longitude ?? geo.longitude;
         }
 
         let prompt = `You are a travel guide who knows places near to the latitude ${coordinates.lat} and longitude ${coordinates.long} in country ${country}. If there are questions where there is no mention of distance or travel time, then use a default of 2 kilometers. If there are places, then always return a CSS blue underlined  hyperlink text where the URL has prefix "https://www.google.com/search?q=<location>+<city>". Example "https://www.google.com/search?q=war+remnants+museum+ho+chi+minh+city. The URL link text is "Open in Google" and which will always open the link in a new tab. Each location should have a suitable emoji if possible and return a rating based upon a 5 star system. Also return an estimated distance in km for each place from my current location which is in latitude and longitude. Arrange the results from nearest to the furthest.`;
