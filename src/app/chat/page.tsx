@@ -1,3 +1,4 @@
+```tsx
 'use client';
 import { useChat } from 'ai/react';
 import { useState, useCallback, useEffect, useRef } from 'react';
@@ -17,11 +18,29 @@ interface MessageResponse {
 export default function Home() {
   const [waitingForAI, setWaitingForAI] = useState<boolean>(false);
   const [debugMode, setDebugMode] = useState<string | undefined>();
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Get geolocation on component mount
   useEffect(() => {
     const debugCookie = Cookies.get('debug');
     setDebugMode(debugCookie);
+
+    // Use Geolocation API to get user's location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (error) => {
+          console.error('Error getting geolocation:', error);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
   }, []);
 
   const scrollToBottom = useCallback(() => {
@@ -37,7 +56,9 @@ export default function Home() {
     },
     body: {
       debug: debugMode,
-    }
+      latitude: latitude, // Pass latitude to the API
+      longitude: longitude, // Pass longitude to the API
+    },
   });
 
   useEffect(() => {
@@ -152,3 +173,4 @@ export default function Home() {
     </div>
   );
 }
+```
