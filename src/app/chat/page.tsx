@@ -1,4 +1,4 @@
-```tsx
+
 'use client';
 import { useChat } from 'ai/react';
 import { useState, useCallback, useEffect, useRef } from 'react';
@@ -173,4 +173,3 @@ export default function Home() {
     </div>
   );
 }
-```
